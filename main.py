@@ -17,27 +17,39 @@ def decode_UTM_text():
 
     transitions_list = turing_machine.split('00')
     print(transitions_list)
-
+    
+    max_state = 0;
+    max_input = 0;
+    
     transitions = {}
     for t in transitions_list:
         current_state, input_symbol, next_state, new_symbol, direction = t.split('0')
+        current_state = len(current_state)
+        input_symbol = len(input_symbol)
+        next_state = len(next_state)
+        new_symbol = len(new_symbol)
+        direction = len(direction)
+        
+        max_state = max(max_state, next_state, current_state)
+        max_input = max(max_input, input_symbol)
+        
         transitions[(current_state, input_symbol)] = (next_state, new_symbol, direction)
 
     entrada = entrada.split('0')
     tape = {}
 
     for i in range(0, len(entrada)):
-        tape[i] = entrada[i]
+        tape[i] = len(entrada[i])
 
-    return transitions, tape
+    return transitions, tape, max_state, max_input
 
 
 
 
 
 def main():
-    transitions, tape = decode_UTM_text()
-    turingMachine = MT(alphabet_symbols=['1','11','111'], blank='111',input_symbols=['1','11','111'], states=['1','11','111','1111'], initial_state='1', transitions=transitions, tape=tape)
+    transitions, tape, max_state, max_input = decode_UTM_text()
+    turingMachine = MT(alphabet_symbols= range(1, max_input) , blank= max_input, input_symbols = range(1, max_input), states= range(1, max_state), initial_state=1, transitions=transitions, tape=tape)
 
     while not turingMachine.halted:
         turingMachine.print_state()
