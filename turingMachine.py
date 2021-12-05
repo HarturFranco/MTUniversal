@@ -1,4 +1,9 @@
 """
+Feito por:
+- Arthur Silveira Franco
+- Iorrana Maria do Nascimento
+- Joao Paulo Paiva Lima
+
 A classe MTU, Maquina de turing Universal com heuristica de deteccao de loop
 """
 
