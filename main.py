@@ -1,22 +1,26 @@
-from turingMachine import MT
+"""
+Script principal, contem a funcao de decodificacao da maquina de turing
+e executa a maquina no metodo principal.
+"""
+import sys
+from turingMachine import MTU
 
 
 # Decodificador:
 # turing machine
-def decode_UTM_text():
-    with open('entrada.txt') as file:
+def decode_UTM_text(file_path):
+    with open(file_path) as file:
         lines = file.readlines()
 
     text = ''
     for line in lines:
         line = line.replace('\n', '')
-        # print(repr(line))
         text = text + line
 
     turing_machine, entrada = text.split('000')[1:-1]
 
     transitions_list = turing_machine.split('00')
-    # print(transitions_list)
+
     
     max_state = 0
     max_input = 0
@@ -50,15 +54,23 @@ def decode_UTM_text():
 
 
 def main():
-    transitions, tape, max_state, max_input = decode_UTM_text()
+    # decodifica maquina de turing e entrada
+    transitions, tape, max_state, max_input = decode_UTM_text(sys.argv[1])
     
-    turingMachine = MT(alphabet_symbols= range(1, max_input) , blank= max_input, input_symbols = range(1, max_input), states= range(1, max_state), initial_state=1, transitions=transitions, tape=tape)
+    # instancia maquina de turing decodificada 
+    turingMachine = MTU(alphabet_symbols= range(1, max_input) , blank= max_input, input_symbols = range(1, max_input), states= range(1, max_state+1), initial_state=1, transitions=transitions, tape=tape)
 
-    while not turingMachine.halted:
-        turingMachine.print()
-        turingMachine.step()
-    print("halted")
+    # execucao da maquina
+    try:
+        while not turingMachine.halted:
+            turingMachine.print()
+            turingMachine.step()
+
+        print(turingMachine.result())
+    except RuntimeError as e:
+        print(e.args[0])
 
 
 if __name__ == '__main__':
     main()
+
