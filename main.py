@@ -1,4 +1,9 @@
 """
+Feito por:
+- Arthur Silveira Franco
+- Iorrana Maria do Nascimento
+- Joao Paulo Paiva Lima
+
 Script principal, contem a funcao de decodificacao da maquina de turing
 e executa a maquina no metodo principal.
 """
@@ -31,21 +36,19 @@ def decode_UTM_text(file_path):
         current_state = len(current_state)
         input_symbol = len(input_symbol)
         next_state = len(next_state)
-        print(next_state)
+        
         new_symbol = len(new_symbol)
         direction = len(direction)
         
         max_state = max(max_state, next_state, current_state)
-        print(max_state)
         max_input = max(max_input, input_symbol)
         
         transitions[(current_state, input_symbol)] = (next_state, new_symbol, direction)
 
     entrada = entrada.split('0')
     tape = {}
-
     for i in range(0, len(entrada)):
-        tape[i] = len(entrada[i])
+        tape[i] = len(entrada[i]) if len(entrada[i]) != 0 else max_input # Entrada vazia = maxInput (blank) para as entradas = 3
 
     return transitions, tape, max_state, max_input
 
@@ -56,8 +59,7 @@ def decode_UTM_text(file_path):
 def main():
     # decodifica maquina de turing e entrada
     transitions, tape, max_state, max_input = decode_UTM_text(sys.argv[1])
-    
-    # instancia maquina de turing decodificada 
+    # instancia maquina de turing decodificada
     turingMachine = MTU(alphabet_symbols= range(1, max_input) , blank= max_input, input_symbols = range(1, max_input), states= range(1, max_state+1), initial_state=1, transitions=transitions, tape=tape)
 
     # execucao da maquina
