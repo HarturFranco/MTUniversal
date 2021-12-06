@@ -25,10 +25,8 @@ def decode_UTM_text(file_path):
     turing_machine, entrada = text.split('000')[1:-1]
 
     transitions_list = turing_machine.split('00')
-
-    
-    max_state = 0
-    max_input = 0
+    num_state = 0
+    num_input = 0
     
     transitions = {}
     for t in transitions_list:
@@ -40,27 +38,26 @@ def decode_UTM_text(file_path):
         new_symbol = len(new_symbol)
         direction = len(direction)
         
-        max_state = max(max_state, next_state, current_state)
-        max_input = max(max_input, input_symbol)
+        num_state = max(num_state, next_state, current_state)
+        num_input = max(num_input, input_symbol)
         
         transitions[(current_state, input_symbol)] = (next_state, new_symbol, direction)
 
     entrada = entrada.split('0')
     tape = {}
     for i in range(0, len(entrada)):
-        tape[i] = len(entrada[i]) if len(entrada[i]) != 0 else max_input # Entrada vazia = maxInput (blank) para as entradas = 3
+        tape[i] = len(entrada[i]) if len(entrada[i]) != 0 else num_input # Entrada vazia = maxInput (blank) para as entradas = 3
 
-    return transitions, tape, max_state, max_input
-
-
-
+    return transitions, tape, num_state, num_input
 
 
 def main():
     # decodifica maquina de turing e entrada
-    transitions, tape, max_state, max_input = decode_UTM_text(sys.argv[1])
+    transitions, tape, num_state, num_input = decode_UTM_text(sys.argv[1])
     # instancia maquina de turing decodificada
-    turingMachine = MTU(alphabet_symbols= range(1, max_input) , blank= max_input, input_symbols = range(1, max_input), states= range(1, max_state+1), initial_state=1, transitions=transitions, tape=tape)
+    turingMachine = MTU(alphabet_symbols= range(1, num_input) , blank= num_input,
+                    input_symbols = range(1, num_input), states= range(1, num_state+1),
+                    initial_state=1, transitions=transitions, tape=tape)
 
     # execucao da maquina
     try:
@@ -68,11 +65,10 @@ def main():
             turingMachine.print()
             turingMachine.step()
 
-        print(turingMachine.result())
+        print("Parou!")
     except RuntimeError as e:
         print(e.args[0])
 
 
 if __name__ == '__main__':
     main()
-
