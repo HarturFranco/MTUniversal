@@ -11,3 +11,8 @@ A Heurística implementada consiste monitorar o número de vezes as transições
 -> Como executar:
 - Baixe a pasta do projeto;
 - execute o comando: "python3 main.py Exemplos/ExemoloX/nomeExemplo.txt". 
+
+# Alunos:
+- Arthur Silveira Franco
+- Iorrana Maria do Nascimento
+- Joao Paulo Paiva Lima
