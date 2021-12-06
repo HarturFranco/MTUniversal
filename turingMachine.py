@@ -17,9 +17,7 @@ class MTU:
         self.input_symbols = input_symbols
         self.states = states
         self.initial_state = initial_state
-        # halt_states sao estados de parada, ou seja: que nao possuem transicoes para nenhum outro estado. Se a maquina para
-        # em um halt_state a entrada e considerada aceita.
-        self.halt_states = [x for x in states if x not in [x for x, y in transitions.keys()]] 
+        
         self.transitions = transitions
 
         self.head = 0
@@ -40,16 +38,6 @@ class MTU:
         print('Fita: ... ', end='')
         print(' '.join(chr(96 + self.tape[i]) if self.tape[i] != self.blank else 'B' for i in range(self.head - span, self.head + span + 1)), end='')
         print(' ...', end='\n')
-    
-    # metodo retorna resultado da maquina para a entrada (Aceita/Rejeitada)
-    def result(self):
-        if self.halted:
-            if self.current_state in self.halt_states:
-                return "Entrada Aceita!"
-            else:
-                return "Entrada Rejeitada!"
-        else:
-            return "Ainda em Execução!"
 
     def move_tape_head(self, direction):
         if direction == 1:
@@ -86,7 +74,7 @@ class MTU:
                 elif continuar == "nao":
                     self.halted = True
                     raise RuntimeError(f'\n A máquina foi parada por loop detectado após {self.total_config_count} configurações.')
-
+        
         except KeyError: # KeyError indica que o estado atual nao tem transicao para atual elemento, maquina para.
             self.halted = True
             return
